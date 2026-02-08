@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { LOGO_URL } from '@/data/players'
-import { Sparkles, Zap, BookOpen, LayoutGrid, GlassWater, Sun, Star, Box, Gem, Cpu } from 'lucide-react'
+import { Sparkles, Zap, BookOpen, LayoutGrid, GlassWater, Sun, Star, Box, Gem, Cpu, Flame } from 'lucide-react'
 
 const pages = [
   { id: 1, name: 'Cinematic Aurora', desc: 'Atmosferico, etereo, luci del nord', icon: Sparkles, gradient: 'from-violet-600 to-indigo-900' },
@@ -14,6 +14,7 @@ const pages = [
   { id: 8, name: '3D Immersive', desc: 'Profondità, immersione, tridimensionale', icon: Box, gradient: 'from-violet-700 to-purple-950' },
   { id: 9, name: 'Minimal Luxury', desc: 'Lusso minimale, premium, raffinato', icon: Gem, gradient: 'from-purple-800 to-gray-900' },
   { id: 10, name: 'Cyberpunk Arena', desc: 'Cyberpunk, neon, arena digitale', icon: Cpu, gradient: 'from-violet-600 to-fuchsia-900' },
+  { id: 11, name: 'Official Landing', desc: 'Arancio e oro, roster ufficiale, minimal bold', icon: Flame, gradient: 'from-orange-600 to-amber-800' },
 ]
 
 export default function HomePage() {
