@@ -1,0 +1,1 @@
+import{r as t}from"./index-Dj4jx_9e.js";import{G as a,M as u,t as r}from"./star-Cy966ddG.js";function i(o){const e=a(()=>r(o)),{isStatic:s}=t.useContext(u);if(s){const[,n]=t.useState(o);t.useEffect(()=>e.on("change",n),[])}return e}export{i as u};

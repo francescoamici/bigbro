@@ -5,7 +5,7 @@ import {
   Youtube, Cpu, Binary, Zap, Crown, Shield, Check,
   ArrowRight, Terminal, Wifi, Radio, Menu, X,
 } from 'lucide-react'
-import { players, teamStats, LOGO_URL } from '@/data/players'
+import { players, teamStats, LOGO_URL, MOONRYDE_IMAGE_URL } from '@/data/players'
 import { news } from '@/data/news'
 import { sponsorTiers } from '@/data/sponsors'
 import { ContactForm } from '@/components/shared/ContactForm'
@@ -870,6 +870,12 @@ function PlayerCard({ player, index }: { player: typeof players[number]; index: 
         <div className="relative p-6 min-h-[240px] flex flex-col justify-between">
           <EncryptedTextOverlay />
 
+          {player.image && (
+            <div className="w-full h-48 mb-4 rounded-xl overflow-hidden bg-bigbro-dark/50">
+              <img src={player.image} alt={player.name} className="w-full h-full object-cover object-top" loading="lazy" />
+            </div>
+          )}
+
           {/* Number badge */}
           <div className="absolute top-4 right-4 font-mono text-4xl font-black text-bigbro-purple/20">
             #{String(player.number).padStart(2, '0')}
@@ -1451,6 +1457,7 @@ function Footer() {
           <p className="font-mono text-[10px] text-bigbro-text-muted tracking-widest">
             &copy; {new Date().getFullYear()} BIGBRO FC // ALL RIGHTS RESERVED
           </p>
+          <p className="mt-2">Made with ❤️ by <a href="https://mindblast.it" target="_blank" rel="noopener noreferrer" className="text-bigbro-purple-light hover:text-bigbro-purple transition-colors">Mindblast</a></p>
           <p className="font-mono text-[10px] text-bigbro-text-muted/50 tracking-widest">
             <Cpu className="w-3 h-3 inline mr-1 -mt-0.5" />
             CYBERPUNK_ARENA v10.0

@@ -19,7 +19,7 @@ import {
   ArrowRight,
   Zap,
 } from 'lucide-react'
-import { players, teamStats, LOGO_URL } from '@/data/players'
+import { players, teamStats, LOGO_URL, MOONRYDE_IMAGE_URL } from '@/data/players'
 import { news } from '@/data/news'
 import { sponsorTiers } from '@/data/sponsors'
 import { ContactForm } from '@/components/shared/ContactForm'
@@ -602,6 +602,11 @@ function RosaSection() {
                 <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-bigbro-purple/0 to-bigbro-purple/0 group-hover:from-bigbro-purple/5 group-hover:to-transparent transition-all duration-500" />
 
                 <div className="relative z-10">
+                  {player.image && (
+                    <div className="w-full h-48 mb-4 rounded-xl overflow-hidden bg-bigbro-dark/50">
+                      <img src={player.image} alt={player.name} className="w-full h-full object-cover object-top" loading="lazy" />
+                    </div>
+                  )}
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <Icon size={14} className="text-bigbro-purple-light" />
@@ -940,6 +945,7 @@ function Footer() {
           <p className="text-xs text-bigbro-text-muted font-mono">
             &copy; {new Date().getFullYear()} BigBro FC. Tutti i diritti riservati.
           </p>
+          <p className="mt-1">Made with ❤️ by <a href="https://mindblast.it" target="_blank" rel="noopener noreferrer" className="text-bigbro-purple-light hover:text-bigbro-purple transition-colors">Mindblast</a></p>
           <p className="text-xs text-bigbro-text-muted/50 font-mono">
             Kings League Italia &bull; Powered by Passion
           </p>

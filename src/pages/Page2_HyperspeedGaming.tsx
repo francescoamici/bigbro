@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useCallback, type MouseEvent as ReactMouseEvent } from 'react'
 import { motion, useInView, type Variants } from 'framer-motion'
-import { players, teamStats, LOGO_URL } from '@/data/players'
+import { players, teamStats, LOGO_URL, MOONRYDE_IMAGE_URL } from '@/data/players'
 import { news } from '@/data/news'
 import { sponsorTiers } from '@/data/sponsors'
 import { ContactForm } from '@/components/shared/ContactForm'
@@ -678,7 +678,7 @@ export default function Page2_HyperspeedGaming() {
                 </div>
 
                 <div className="flex items-center gap-3 mb-6">
-                  <Crown className="w-8 h-8 text-bigbro-purple" />
+                  <img src={MOONRYDE_IMAGE_URL} alt="Moonryde" className="w-12 h-12 rounded-full object-cover border-2 border-bigbro-purple/30" />
                   <div>
                     <h3 className="font-heading text-2xl font-bold uppercase">Moonryde</h3>
                     <p className="text-bigbro-text-muted text-sm">Presidente & Fondatore</p>
@@ -777,6 +777,12 @@ export default function Page2_HyperspeedGaming() {
                       </div>
 
                       <div className="p-6 relative z-10">
+                        {/* Player image */}
+                        {player.image && (
+                          <div className="w-full h-48 mb-4 overflow-hidden bg-bigbro-dark/50">
+                            <img src={player.image} alt={player.name} className="w-full h-full object-cover object-top" loading="lazy" />
+                          </div>
+                        )}
                         {/* Role icon + number */}
                         <div className="flex items-center justify-between mb-4">
                           <div className="flex items-center gap-2">
@@ -1156,11 +1162,11 @@ export default function Page2_HyperspeedGaming() {
             </div>
 
             {/* Copyright */}
-            <p className="text-bigbro-text-muted text-xs text-center md:text-right">
-              &copy; {new Date().getFullYear()} BigBro FC. Tutti i diritti riservati.
-              <br />
-              <span className="text-bigbro-text-muted/50">Kings League Italia</span>
-            </p>
+            <div className="text-bigbro-text-muted text-xs text-center md:text-right">
+              <p>&copy; {new Date().getFullYear()} BigBro FC. Tutti i diritti riservati.</p>
+              <p className="text-bigbro-text-muted/50">Kings League Italia</p>
+              <p className="mt-1">Made with ❤️ by <a href="https://mindblast.it" target="_blank" rel="noopener noreferrer" className="text-bigbro-purple-light hover:text-bigbro-purple transition-colors">Mindblast</a></p>
+            </div>
           </div>
         </div>
       </footer>

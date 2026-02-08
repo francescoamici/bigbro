@@ -13,7 +13,7 @@ import {
   Youtube, Box, Layers, Move3d, Crown, Shield, Check,
   ArrowRight, Grip, Maximize, Menu, X,
 } from 'lucide-react'
-import { players, teamStats, LOGO_URL } from '@/data/players'
+import { players, teamStats, LOGO_URL, MOONRYDE_IMAGE_URL } from '@/data/players'
 import { news } from '@/data/news'
 import { sponsorTiers } from '@/data/sponsors'
 import { ContactForm } from '@/components/shared/ContactForm'
@@ -516,6 +516,11 @@ function PinPlayerCard({ player, index }: { player: typeof players[0]; index: nu
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-bigbro-purple to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
         <div className="p-6 md:p-7">
+          {player.image && (
+            <div className="w-full h-48 mb-4 rounded-xl overflow-hidden bg-bigbro-dark/50">
+              <img src={player.image} alt={player.name} className="w-full h-full object-cover object-top" loading="lazy" />
+            </div>
+          )}
           <div className="flex items-center justify-between mb-4">
             <span className="text-5xl font-heading font-bold text-bigbro-purple/20 leading-none select-none">
               {player.number === 0 ? '--' : String(player.number).padStart(2, '0')}
@@ -998,15 +1003,7 @@ export default function Page8_3DImmersive() {
                 la storia della Kings League.
               </p>
               <div className="flex items-center gap-4">
-                <div
-                  className="w-14 h-14 rounded-full bg-bigbro-purple/20 flex items-center justify-center"
-                  style={{
-                    boxShadow: '0 8px 24px rgba(124,58,237,0.2)',
-                    transform: 'perspective(400px) translateZ(10px)',
-                  }}
-                >
-                  <Crown className="w-6 h-6 text-bigbro-purple-light" />
-                </div>
+                <img src={MOONRYDE_IMAGE_URL} alt="Moonryde" className="w-14 h-14 rounded-full object-cover border-2 border-bigbro-purple/30" />
                 <div>
                   <p className="font-heading text-lg font-bold text-bigbro-text">Moonryde</p>
                   <p className="text-bigbro-text-muted text-sm">Presidente & Fondatore</p>
@@ -1161,9 +1158,10 @@ export default function Page8_3DImmersive() {
             </div>
 
             {/* Copyright */}
-            <p className="text-bigbro-text-muted text-sm">
-              &copy; {new Date().getFullYear()} BigBro FC. Tutti i diritti riservati.
-            </p>
+            <div className="text-bigbro-text-muted text-sm">
+              <p>&copy; {new Date().getFullYear()} BigBro FC. Tutti i diritti riservati.</p>
+              <p className="mt-1">Made with ❤️ by <a href="https://mindblast.it" target="_blank" rel="noopener noreferrer" className="text-bigbro-purple-light hover:text-bigbro-purple transition-colors">Mindblast</a></p>
+            </div>
           </div>
         </div>
       </footer>

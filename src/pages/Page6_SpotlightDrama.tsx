@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback, type MouseEvent as ReactMouseEvent } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { players, teamStats, LOGO_URL } from '@/data/players'
+import { players, teamStats, LOGO_URL, MOONRYDE_IMAGE_URL } from '@/data/players'
 import { news } from '@/data/news'
 import { sponsorTiers } from '@/data/sponsors'
 import { ContactForm } from '@/components/shared/ContactForm'
@@ -528,6 +528,11 @@ function RosaSection() {
                 )}
 
                 <div className="relative z-10">
+                  {player.image && (
+                    <div className="w-full h-48 mb-4 rounded-xl overflow-hidden bg-bigbro-dark/50">
+                      <img src={player.image} alt={player.name} className="w-full h-full object-cover object-top" loading="lazy" />
+                    </div>
+                  )}
                   {/* Number + Role */}
                   <div className="flex items-center justify-between mb-4">
                     <span className="font-heading text-5xl font-bold text-white/5 group-hover:text-bigbro-purple/20 transition-colors duration-500">
@@ -906,6 +911,7 @@ function Footer() {
           <p className="text-sm text-bigbro-text-muted/60 text-center">
             &copy; {new Date().getFullYear()} BigBro FC &mdash; Kings League Italia. Tutti i diritti riservati.
           </p>
+          <p className="mt-1 text-sm text-bigbro-text-muted">Made with ❤️ by <a href="https://mindblast.it" target="_blank" rel="noopener noreferrer" className="text-bigbro-purple-light hover:text-bigbro-purple transition-colors">Mindblast</a></p>
         </div>
       </div>
     </footer>

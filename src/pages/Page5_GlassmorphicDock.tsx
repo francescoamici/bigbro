@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion'
-import { players, teamStats, LOGO_URL } from '@/data/players'
+import { players, teamStats, LOGO_URL, MOONRYDE_IMAGE_URL } from '@/data/players'
 import { news } from '@/data/news'
 import { sponsorTiers } from '@/data/sponsors'
 import { ContactForm } from '@/components/shared/ContactForm'
@@ -565,6 +565,11 @@ function LaRosaSection() {
                 transition={{ delay: i * 0.08 }}
               >
                 <GlassCard className="p-6 group hover:-translate-y-2 hover:bg-white/10 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/10">
+                  {player.image && (
+                    <div className="w-full h-48 mb-4 rounded-xl overflow-hidden bg-bigbro-dark/50">
+                      <img src={player.image} alt={player.name} className="w-full h-full object-cover object-top" loading="lazy" />
+                    </div>
+                  )}
                   {/* Player header */}
                   <div className="flex items-start justify-between mb-5">
                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-bigbro-purple/30 to-violet-600/20 backdrop-blur-md border border-white/10 flex items-center justify-center">
@@ -864,9 +869,10 @@ function FooterSection() {
             </div>
 
             {/* Copyright */}
-            <p className="text-bigbro-text-muted text-sm">
-              &copy; {new Date().getFullYear()} BigBro FC. Tutti i diritti riservati.
-            </p>
+            <div className="text-bigbro-text-muted text-sm">
+              <p>&copy; {new Date().getFullYear()} BigBro FC. Tutti i diritti riservati.</p>
+              <p className="mt-1">Made with ❤️ by <a href="https://mindblast.it" target="_blank" rel="noopener noreferrer" className="text-bigbro-purple-light hover:text-bigbro-purple transition-colors">Mindblast</a></p>
+            </div>
           </div>
         </div>
       </div>

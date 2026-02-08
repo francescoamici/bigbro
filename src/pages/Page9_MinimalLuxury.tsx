@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { motion, useInView, useMotionValue } from 'framer-motion'
-import { players, teamStats, LOGO_URL } from '@/data/players'
+import { players, teamStats, LOGO_URL, MOONRYDE_IMAGE_URL } from '@/data/players'
 import { news } from '@/data/news'
 import { sponsorTiers } from '@/data/sponsors'
 import { ContactForm } from '@/components/shared/ContactForm'
@@ -589,6 +589,11 @@ function LaRosaSection() {
             return (
               <GlareCard key={player.name} index={i} className="p-7 group">
                 <div className="relative z-20">
+                  {player.image && (
+                    <div className="w-full h-48 mb-4 rounded-xl overflow-hidden bg-bigbro-dark/50">
+                      <img src={player.image} alt={player.name} className="w-full h-full object-cover object-top" loading="lazy" />
+                    </div>
+                  )}
                   {/* Number watermark */}
                   <span className="absolute -top-1 -right-1 text-6xl font-extralight text-white/[0.03] select-none">
                     {player.number === 0 ? 'HC' : player.number}
@@ -1061,9 +1066,10 @@ function FooterSection() {
           </div>
 
           {/* Copyright */}
-          <p className="text-[12px] font-light tracking-[0.1em] text-bigbro-text-muted/30">
-            &copy; {new Date().getFullYear()} BigBro FC
-          </p>
+          <div className="text-[12px] font-light tracking-[0.1em] text-bigbro-text-muted/30">
+            <p>&copy; {new Date().getFullYear()} BigBro FC</p>
+            <p className="mt-1">Made with ❤️ by <a href="https://mindblast.it" target="_blank" rel="noopener noreferrer" className="text-bigbro-purple-light hover:text-bigbro-purple transition-colors">Mindblast</a></p>
+          </div>
         </div>
       </div>
     </footer>

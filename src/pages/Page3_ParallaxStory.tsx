@@ -25,7 +25,7 @@ import {
   ArrowRight,
   Circle,
 } from 'lucide-react'
-import { players, teamStats, LOGO_URL } from '@/data/players'
+import { players, teamStats, LOGO_URL, MOONRYDE_IMAGE_URL } from '@/data/players'
 import { news } from '@/data/news'
 import { sponsorTiers } from '@/data/sponsors'
 import { ContactForm } from '@/components/shared/ContactForm'
@@ -203,7 +203,7 @@ function HeroSection() {
   // Midground
   const midY = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
   // Foreground text moves faster
-  const fgY = useTransform(scrollYProgress, [0, 1], ['0%', '80%'])
+  const fgY = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
   const fgOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
   const fgScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.85])
 
@@ -375,8 +375,8 @@ function ChiSiamoSection() {
             </div>
           </div>
 
-          {/* Right: paragraphs revealed by scroll */}
-          <div className="space-y-8">
+          {/* Right: paragraphs revealed by scroll (overlapping in place) */}
+          <div className="relative h-[120px] md:h-[100px]">
             {paragraphs.map((text, i) => {
               const start = (i + 0.5) / (paragraphs.length + 1)
               const end = (i + 1.2) / (paragraphs.length + 1)
@@ -411,14 +411,14 @@ function StickyParagraph({
   end: number
   index: number
 }) {
-  const opacity = useTransform(scrollProgress, [start - 0.05, start, end, end + 0.05], [0, 1, 1, 0.3])
+  const opacity = useTransform(scrollProgress, [start - 0.05, start, end, end + 0.05], [0, 1, 1, 0])
   const y = useTransform(scrollProgress, [start - 0.05, start], [30, 0])
   const smoothOpacity = useSpring(opacity, { stiffness: 100, damping: 30 })
   const smoothY = useSpring(y, { stiffness: 100, damping: 30 })
 
   return (
     <motion.div
-      className="flex gap-4 items-start"
+      className="absolute inset-0 flex gap-4 items-start"
       style={{ opacity: smoothOpacity, y: smoothY }}
     >
       <div className="mt-1 shrink-0">
@@ -494,6 +494,11 @@ function RosaSection() {
                   <div className="h-2 w-full bg-gradient-to-r from-bigbro-purple via-bigbro-purple-light to-bigbro-purple" />
 
                   <div className="p-8 flex flex-col h-full">
+                    {player.image && (
+                      <div className="w-full h-48 mb-4 rounded-xl overflow-hidden bg-bigbro-dark/50">
+                        <img src={player.image} alt={player.name} className="w-full h-full object-cover object-top" loading="lazy" />
+                      </div>
+                    )}
                     {/* Number + role icon */}
                     <div className="flex items-center justify-between mb-6">
                       <span className="text-6xl font-heading font-bold text-bigbro-purple/20">
@@ -967,6 +972,7 @@ function Footer() {
               Parallax Storytelling Edition
             </span>
           </p>
+          <p className="mt-1 text-bigbro-text-muted text-sm">Made with ❤️ by <a href="https://mindblast.it" target="_blank" rel="noopener noreferrer" className="text-bigbro-purple-light hover:text-bigbro-purple transition-colors">Mindblast</a></p>
         </div>
       </div>
     </footer>
@@ -976,7 +982,7 @@ function Footer() {
 /* ---------- PAGE COMPONENT ---------- */
 export default function Page3_ParallaxStory() {
   return (
-    <div className="min-h-screen bg-bigbro-black text-bigbro-text overflow-x-hidden">
+    <div className="min-h-screen bg-bigbro-black text-bigbro-text overflow-x-clip">
       <Navbar />
       <HeroSection />
       <ChiSiamoSection />
