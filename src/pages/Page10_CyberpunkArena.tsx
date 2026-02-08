@@ -3,7 +3,7 @@ import { motion, useInView, AnimatePresence, useSpring, useMotionValue } from 'f
 import {
   Trophy, Users, Star, Target, Mail, Instagram, Twitter,
   Youtube, Cpu, Binary, Zap, Crown, Shield, Check,
-  ArrowRight, Terminal, Wifi, Radio, Menu, X,
+  ArrowRight, Terminal, Wifi, Radio, Menu, X, Hand,
 } from 'lucide-react'
 import { players, teamStats, LOGO_URL, MOONRYDE_IMAGE_URL } from '@/data/players'
 import { news } from '@/data/news'
@@ -849,10 +849,10 @@ function PlayerCard({ player, index }: { player: typeof players[number]; index: 
   }, [hovered, player.name])
 
   const roleIcons: Record<string, typeof Shield> = {
+    Portiere: Hand,
     Attaccante: Target,
     Centrocampista: Radio,
     Difensore: Shield,
-    'Difensore/Centrocampista': Shield,
     Allenatore: Crown,
   }
   const RoleIcon = roleIcons[player.role] || Users

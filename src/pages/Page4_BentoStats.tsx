@@ -18,6 +18,7 @@ import {
   Check,
   ArrowRight,
   Zap,
+  Hand,
 } from 'lucide-react'
 import { players, teamStats, LOGO_URL, MOONRYDE_IMAGE_URL } from '@/data/players'
 import { news } from '@/data/news'
@@ -544,10 +545,10 @@ function ChiSiamoSection() {
    SECTION 4: La Rosa - Bento player grid + Marquee
    ============================================================ */
 const roleIcons: Record<string, React.ElementType> = {
+  Portiere: Hand,
   Attaccante: Target,
   Centrocampista: Activity,
   Difensore: Shield,
-  'Difensore/Centrocampista': Shield,
   Allenatore: Crown,
 }
 
@@ -555,15 +556,14 @@ function RosaSection() {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
-  // Bento layout: first two cards are larger
-  const gridClasses = [
-    'col-span-2 md:col-span-2 row-span-1',
-    'col-span-2 md:col-span-1 row-span-1',
-    'col-span-1 row-span-1',
-    'col-span-1 row-span-1',
-    'col-span-1 row-span-1',
-    'col-span-2 md:col-span-1 row-span-1',
-  ]
+  // Bento layout: varied card sizes for visual interest
+  const getGridClass = (i: number) => {
+    const mod = i % 6
+    if (mod === 0) return 'col-span-2 md:col-span-2 row-span-1'
+    if (mod === 1) return 'col-span-2 md:col-span-1 row-span-1'
+    if (mod === 5) return 'col-span-2 md:col-span-1 row-span-1'
+    return 'col-span-1 row-span-1'
+  }
 
   return (
     <section id="rosa" className="relative py-24 md:py-32 overflow-hidden">
@@ -595,7 +595,7 @@ function RosaSection() {
                 transition={{ duration: 0.5, delay: 0.1 + i * 0.1 }}
                 className={cn(
                   'bg-bigbro-card/60 border border-white/5 rounded-2xl p-5 md:p-6 flex flex-col justify-between backdrop-blur-sm relative overflow-hidden group hover:border-bigbro-purple/30 transition-all duration-500',
-                  gridClasses[i]
+                  getGridClass(i)
                 )}
               >
                 {/* Hover glow */}

@@ -11,7 +11,7 @@ import {
 import {
   Trophy, Users, Star, Target, Mail, Instagram, Twitter,
   Youtube, Box, Layers, Move3d, Crown, Shield, Check,
-  ArrowRight, Grip, Maximize, Menu, X,
+  ArrowRight, Grip, Maximize, Menu, X, Hand,
 } from 'lucide-react'
 import { players, teamStats, LOGO_URL, MOONRYDE_IMAGE_URL } from '@/data/players'
 import { news } from '@/data/news'
@@ -457,10 +457,10 @@ function PinPlayerCard({ player, index }: { player: typeof players[0]; index: nu
   const [hovered, setHovered] = useState(false)
 
   const roleIcons: Record<string, typeof Shield> = {
+    Portiere: Hand,
     Attaccante: Target,
     Centrocampista: Star,
     Difensore: Shield,
-    'Difensore/Centrocampista': Shield,
     Allenatore: Crown,
   }
   const RoleIcon = roleIcons[player.role] ?? Users

@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { motion, useInView, useMotionValue } from 'framer-motion'
+import { motion, useInView, useMotionValue, AnimatePresence } from 'framer-motion'
 import { players, teamStats, LOGO_URL, MOONRYDE_IMAGE_URL } from '@/data/players'
 import { news } from '@/data/news'
 import { sponsorTiers } from '@/data/sponsors'
@@ -23,6 +23,9 @@ import {
   ChevronLeft,
   ChevronRight,
   GripVertical,
+  Hand,
+  Menu,
+  X,
 } from 'lucide-react'
 
 // ---------------------------------------------------------------------------
@@ -85,6 +88,7 @@ function Section({
 // Role icon helper
 // ---------------------------------------------------------------------------
 function getRoleIcon(role: string) {
+  if (role.toLowerCase().includes('portiere')) return Hand
   if (role.toLowerCase().includes('attaccante')) return Target
   if (role.toLowerCase().includes('centrocampista')) return Sparkles
   if (role.toLowerCase().includes('difensore')) return Shield
@@ -115,6 +119,7 @@ function getCategoryStyle(category: string) {
 // ---------------------------------------------------------------------------
 function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -125,6 +130,7 @@ function Navbar() {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id)
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    setMobileOpen(false)
   }
 
   const links = [
@@ -139,7 +145,7 @@ function Navbar() {
     <motion.nav
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
-        scrolled
+        scrolled || mobileOpen
           ? 'bg-bigbro-black/80 backdrop-blur-xl border-b border-white/[0.04]'
           : 'bg-transparent'
       )}
@@ -163,7 +169,7 @@ function Navbar() {
           </span>
         </button>
 
-        {/* Links */}
+        {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-10">
           {links.map((link) => (
             <button
@@ -176,14 +182,53 @@ function Navbar() {
           ))}
         </div>
 
-        {/* CTA */}
+        {/* Desktop CTA */}
         <button
           onClick={() => scrollTo('contatti')}
-          className="text-[13px] font-light tracking-[0.12em] uppercase text-bigbro-text border border-white/[0.12] rounded-full px-6 py-2.5 hover:bg-white/[0.04] hover:border-white/[0.2] transition-all duration-300"
+          className="hidden md:block text-[13px] font-light tracking-[0.12em] uppercase text-bigbro-text border border-white/[0.12] rounded-full px-6 py-2.5 hover:bg-white/[0.04] hover:border-white/[0.2] transition-all duration-300"
         >
           Diventa Sponsor
         </button>
+
+        {/* Mobile hamburger */}
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="md:hidden text-bigbro-text p-2"
+          aria-label="Menu"
+        >
+          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
       </div>
+
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="md:hidden overflow-hidden bg-bigbro-black/90 backdrop-blur-xl border-t border-white/[0.04]"
+          >
+            <div className="px-6 py-4 flex flex-col gap-4">
+              {links.map((link) => (
+                <button
+                  key={link.id}
+                  onClick={() => scrollTo(link.id)}
+                  className="text-left text-bigbro-text-muted text-sm font-light tracking-[0.12em] uppercase hover:text-bigbro-text transition-colors duration-300"
+                >
+                  {link.label}
+                </button>
+              ))}
+              <button
+                onClick={() => scrollTo('contatti')}
+                className="mt-2 text-sm font-light tracking-[0.12em] uppercase text-bigbro-text border border-white/[0.12] rounded-full px-6 py-2.5 text-center"
+              >
+                Diventa Sponsor
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   )
 }

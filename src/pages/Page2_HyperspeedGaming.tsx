@@ -21,6 +21,7 @@ import {
   Crown,
   Check,
   ArrowRight,
+  Hand,
 } from 'lucide-react'
 
 /* ─────────────────────────────────────────────
@@ -344,10 +345,10 @@ function Section({
    ROLE ICON MAP
 ───────────────────────────────────────────── */
 const roleIcons: Record<string, typeof Trophy> = {
+  Portiere: Hand,
   Attaccante: Target,
   Centrocampista: Swords,
   Difensore: Shield,
-  'Difensore/Centrocampista': Shield,
   Allenatore: Crown,
 }
 

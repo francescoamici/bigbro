@@ -24,6 +24,7 @@ import {
   Check,
   ArrowRight,
   Circle,
+  Hand,
 } from 'lucide-react'
 import { players, teamStats, LOGO_URL, MOONRYDE_IMAGE_URL } from '@/data/players'
 import { news } from '@/data/news'
@@ -443,10 +444,10 @@ function RosaSection() {
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
 
   const roleIcons: Record<string, typeof Trophy> = {
+    Portiere: Hand,
     Attaccante: Target,
     Centrocampista: Star,
     Difensore: Shield,
-    'Difensore/Centrocampista': Shield,
     Allenatore: Crown,
   }
 

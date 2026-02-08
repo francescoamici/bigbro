@@ -22,6 +22,7 @@ import {
   Sparkles,
   Target,
   ChevronRight,
+  Hand,
 } from 'lucide-react'
 
 // ---------------------------------------------------------------------------
@@ -200,6 +201,7 @@ const dockItems = [
 // Role icon mapping
 // ---------------------------------------------------------------------------
 function getRoleIcon(role: string) {
+  if (role.toLowerCase().includes('portiere')) return Hand
   if (role.toLowerCase().includes('attaccante')) return Target
   if (role.toLowerCase().includes('centrocampista')) return Sparkles
   if (role.toLowerCase().includes('difensore')) return Shield
@@ -254,7 +256,7 @@ function Dock() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 1.5, type: 'spring', stiffness: 120, damping: 20 }}
     >
-      <div className="backdrop-blur-2xl bg-white/10 border border-white/10 rounded-2xl px-4 py-3 flex items-end gap-2 shadow-2xl shadow-black/30">
+      <div className="backdrop-blur-2xl bg-white/10 border border-white/10 rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 flex items-end gap-1.5 sm:gap-2 shadow-2xl shadow-black/30">
         {dockItems.map((item, index) => {
           const Icon = item.icon
           const scale = getScale(index)
@@ -265,6 +267,7 @@ function Dock() {
               className="relative flex flex-col items-center group"
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
+              onTouchStart={() => setHoveredIndex(index)}
               onClick={() => scrollToSection(item.id)}
               animate={{ scale }}
               transition={{ type: 'spring', stiffness: 400, damping: 25 }}
@@ -283,7 +286,7 @@ function Dock() {
                   </motion.span>
                 )}
               </AnimatePresence>
-              <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center hover:bg-white/20 transition-colors duration-200">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center hover:bg-white/20 transition-colors duration-200">
                 <Icon className="w-5 h-5 text-bigbro-text" />
               </div>
             </motion.button>

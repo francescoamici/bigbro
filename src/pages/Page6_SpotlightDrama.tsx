@@ -23,6 +23,7 @@ import {
   Flame,
   Menu,
   X,
+  Hand,
 } from 'lucide-react'
 
 /* ------------------------------------------------------------------ */
@@ -460,10 +461,10 @@ function RosaSection() {
   const isInView = useInView(sectionRef, { once: true, margin: '-80px' })
 
   const roleIcons: Record<string, typeof Trophy> = {
+    Portiere: Hand,
     Attaccante: Target,
     Centrocampista: Star,
     Difensore: Shield,
-    'Difensore/Centrocampista': Shield,
     Allenatore: Crown,
   }
 
@@ -497,7 +498,7 @@ function RosaSection() {
 
         {/* Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {players.slice(0, 6).map((player, i) => {
+          {players.map((player, i) => {
             const Icon = roleIcons[player.role] || Star
             const isActive = hoveredIndex === i
             const isSiblingHovered = hoveredIndex !== null && hoveredIndex !== i
