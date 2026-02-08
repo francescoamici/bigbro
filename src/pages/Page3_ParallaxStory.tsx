@@ -26,7 +26,7 @@ import {
   Circle,
   Hand,
 } from 'lucide-react'
-import { players, teamStats, LOGO_URL, MOONRYDE_IMAGE_URL } from '@/data/players'
+import { players, teamStats, LOGO_URL } from '@/data/players'
 import { news } from '@/data/news'
 import { sponsorTiers } from '@/data/sponsors'
 import { ContactForm } from '@/components/shared/ContactForm'
