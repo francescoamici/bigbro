@@ -1,61 +1,8 @@
 import { useEffect, useRef } from 'react'
-import { LOGO_URL } from '@/data/players'
-
-// ─── Data ────────────────────────────────────────────────────────────────────
-
-const leaders = [
-  {
-    name: 'MOONRYDE',
-    role: 'Presidente',
-    image: 'https://kingsleague.pro/_ipx/fit_outside&s_672x428/kama/production/staff/415aa4e9-aa18-4b42-9b14-98b6c81a3d3c/27214244.png',
-  },
-  {
-    name: 'RENATO FRACCI',
-    role: 'Allenatore',
-    image: 'https://kingsleague.pro/_ipx/s_256x360/kama/production/staff/58bf349e-1b56-4650-835b-5d7ef70d78d5/134334366.png',
-  },
-]
-
-const roster = [
-  {
-    position: 'Portieri',
-    players: [
-      { name: 'STEFANO PROCIDA', number: 77, role: 'Portiere', image: 'https://kingsleague-cdn.kama.football/account/production/player/4a40088d-4172-49e5-a0d0-2eca495362c8/406802932.png' },
-      { name: 'LEANDRO CASAPIERI', number: 22, role: 'Portiere', image: 'https://kingsleague-cdn.kama.football/account/production/player/ebd00bff-e85c-4066-8d50-46bdde70bee5/30595931.png' },
-    ],
-  },
-  {
-    position: 'Difensori',
-    players: [
-      { name: 'ALESSANDRO GARILLI', number: 14, role: 'Difensore', image: 'https://kingsleague-cdn.kama.football/account/production/player/db27a45a-9a65-430e-a641-85bd3c5de5dc/563739485.png' },
-      { name: 'ALESSANDRO TUIA', number: 13, role: 'Difensore', image: 'https://kingsleague-cdn.kama.football/account/production/player/74460a1a-18be-452e-973f-d3bf2537a11d/227052856.png' },
-      { name: 'ALEX FRANA', number: 19, role: 'Difensore', image: 'https://kingsleague-cdn.kama.football/account/production/player/412b1c1c-dce6-437f-95b5-f369b94ae178/106467418.png' },
-      { name: 'YASIN ZOUGUI', number: 23, role: 'Difensore', image: 'https://kingsleague-cdn.kama.football/account/production/player/5f71f37e-5ff7-4d57-9ba0-84d764c23a51/982379586.png' },
-    ],
-  },
-  {
-    position: 'Centrocampisti',
-    players: [
-      { name: 'SEBASTIANO FINARDI', number: 4, role: 'Centrocampista', image: 'https://kingsleague-cdn.kama.football/account/production/player/24d541b6-e59f-4955-8377-70ba6daa490e/998593378.png' },
-      { name: 'SPIZZI', number: 24, role: 'Centrocampista', image: 'https://kingsleague-cdn.kama.football/account/production/player/008b5218-37bb-455d-9231-69dddb8d4436/548211308.png' },
-    ],
-  },
-  {
-    position: 'Attaccanti',
-    players: [
-      { name: 'ANDREA STRADA', number: 21, role: 'Attaccante', image: 'https://kingsleague-cdn.kama.football/account/production/player/327cd48e-2ecd-4721-9d9b-81ef401ef91c/267306880.png' },
-      { name: 'MATTIA PESCA', number: 17, role: 'Attaccante', image: 'https://kingsleague-cdn.kama.football/account/production/player/f54a485d-994f-4392-a5ab-a76a36e857ae/283251797.png' },
-      { name: 'DAVIDE MOSCARDELLI', number: 9, role: 'Attaccante', image: 'https://kingsleague-cdn.kama.football/account/production/player/721fb04b-287c-4ac2-98ee-14f39674a1cd/28101621.png' },
-    ],
-  },
-]
-
-const stats = [
-  { target: 11, label: 'Giocatori' },
-  { target: 4, label: 'Posizioni' },
-  { target: 1, label: 'Obiettivo' },
-  { target: null, label: 'Passione', display: '\u221E' },
-]
+import { players, teamStats, LOGO_URL, MOONRYDE_IMAGE_URL } from '@/data/players'
+import { news } from '@/data/news'
+import { sponsorTiers } from '@/data/sponsors'
+import { ContactForm } from '@/components/shared/ContactForm'
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
@@ -63,6 +10,20 @@ export default function Page11_OfficialLanding() {
   const navRef = useRef<HTMLElement>(null)
   const revealRefs = useRef<(HTMLElement | null)[]>([])
   const statRefs = useRef<(HTMLDivElement | null)[]>([])
+
+  const stats = [
+    { target: teamStats.position, label: 'Posizione', suffix: '°' },
+    { target: teamStats.wins, label: 'Vittorie' },
+    { target: teamStats.goals, label: 'Gol Segnati' },
+    { target: players.length, label: 'Giocatori' },
+  ]
+
+  const categoryColors: Record<string, string> = {
+    mercato: '#10b981',
+    match: '#e35205',
+    lifestyle: '#f59e0b',
+    team: '#06b6d4',
+  }
 
   // Navbar scroll effect
   useEffect(() => {
@@ -107,7 +68,8 @@ export default function Page11_OfficialLanding() {
                 current = target
                 clearInterval(interval)
               }
-              el.textContent = String(current)
+              const suffix = el.dataset.suffix || ''
+              el.textContent = String(current) + suffix
             }, 40)
             obs.unobserve(el)
           }
@@ -139,9 +101,11 @@ export default function Page11_OfficialLanding() {
           <span>BIGBRO</span>
         </a>
         <ul className="p11-nav-links">
-          <li><a href="#p11-leadership">Leadership</a></li>
-          <li><a href="#p11-roster">Roster</a></li>
-          <li><a href="#p11-stats">Stats</a></li>
+          <li><a href="#p11-chi-siamo">Chi Siamo</a></li>
+          <li><a href="#p11-roster">Rosa</a></li>
+          <li><a href="#p11-sponsor">Sponsor</a></li>
+          <li><a href="#p11-news">News</a></li>
+          <li><a href="#p11-contatti">Contatti</a></li>
         </ul>
       </nav>
 
@@ -157,7 +121,7 @@ export default function Page11_OfficialLanding() {
           <p className="p11-hero-subtitle">Kings League Italia</p>
           <p className="p11-hero-tagline">Passione, grinta e spettacolo. Un solo obiettivo: la corona.</p>
           <div className="p11-hero-cta">
-            <a href="#p11-roster">Scopri la Squadra</a>
+            <a href="#p11-sponsor">Diventa Sponsor</a>
           </div>
         </div>
         <div className="p11-scroll-indicator">
@@ -166,30 +130,62 @@ export default function Page11_OfficialLanding() {
         </div>
       </section>
 
-      {/* LEADERSHIP */}
-      <section id="p11-leadership" className="p11-section p11-section-dark">
+      {/* CHI SIAMO */}
+      <section id="p11-chi-siamo" className="p11-section p11-section-dark">
         <div className="p11-section-topline" />
-        <div {...revealRef()} >
+        <div {...revealRef()}>
           <div className="p11-section-header">
-            <p className="p11-section-label">La Guida</p>
-            <h2 className="p11-section-title">MENTE E <span className="p11-accent">STRATEGIA</span></h2>
+            <p className="p11-section-label">La Nostra Storia</p>
+            <h2 className="p11-section-title">CHI <span className="p11-accent">SIAMO</span></h2>
             <div className="p11-section-divider" />
           </div>
         </div>
-        <div className="p11-leadership-grid">
-          {leaders.map((leader, i) => (
-            <div key={leader.name} {...revealRef(i + 1)} >
-              <div className="p11-leader-card">
-                <div className="p11-leader-img-wrap">
-                  <img src={leader.image} alt={leader.name} loading="lazy" />
+        <div className="p11-about-grid">
+          <div {...revealRef(1)}>
+            <div className="p11-about-text">
+              <p>
+                BigBro FC nasce dalla visione di <strong>Moonryde</strong>, presidente e fondatore.
+                Una squadra costruita sulla passione, sulla grinta e sul desiderio di dominare la Kings League Italia.
+                Terzi nel Girone A, ma con la fame di chi punta al vertice.
+              </p>
+              <p>
+                Ogni partita è una battaglia, ogni gol una dichiarazione. Il Gobbo non molla mai,
+                dentro e fuori dal campo. Con una rosa di talento e un progetto ambizioso,
+                BigBro FC punta a scrivere la storia della Kings League.
+              </p>
+            </div>
+          </div>
+          <div {...revealRef(2)}>
+            <div className="p11-about-card">
+              <div className="p11-about-card-top" />
+              <div className="p11-about-card-inner">
+                <div className="p11-about-moonryde">
+                  <img src={MOONRYDE_IMAGE_URL} alt="Moonryde" />
+                  <div>
+                    <h3 className="p11-about-name">MOONRYDE</h3>
+                    <p className="p11-about-role">Presidente & Fondatore</p>
+                  </div>
                 </div>
-                <div className="p11-leader-info">
-                  <p className="p11-leader-role">{leader.role}</p>
-                  <h3 className="p11-leader-name">{leader.name}</h3>
+                <div className="p11-about-stats-row">
+                  <div className="p11-about-stat">
+                    <span className="p11-about-stat-value">{teamStats.positionLabel}</span>
+                    <span className="p11-about-stat-label">Classifica</span>
+                  </div>
+                  <div className="p11-about-stat">
+                    <span className="p11-about-stat-value">{teamStats.wins}</span>
+                    <span className="p11-about-stat-label">Vittorie</span>
+                  </div>
+                  <div className="p11-about-stat">
+                    <span className="p11-about-stat-value">{teamStats.goals}</span>
+                    <span className="p11-about-stat-label">Gol</span>
+                  </div>
                 </div>
+                <p className="p11-about-quote">
+                  &ldquo;Questa squadra ha fame, il nostro obiettivo è chiaro: arrivare fino in fondo.&rdquo;
+                </p>
               </div>
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
@@ -202,9 +198,10 @@ export default function Page11_OfficialLanding() {
                 <div
                   className="p11-stat-num"
                   ref={(el) => { statRefs.current[i] = el }}
-                  data-target={stat.target ?? undefined}
+                  data-target={stat.target}
+                  data-suffix={stat.suffix || ''}
                 >
-                  {stat.display ?? '0'}
+                  0
                 </div>
                 <p className="p11-stat-label">{stat.label}</p>
               </div>
@@ -218,42 +215,167 @@ export default function Page11_OfficialLanding() {
         <div {...revealRef()}>
           <div className="p11-section-header">
             <p className="p11-section-label">La Squadra</p>
-            <h2 className="p11-section-title">MEET THE <span className="p11-accent">TEAM</span></h2>
+            <h2 className="p11-section-title">LA <span className="p11-accent">ROSA</span></h2>
             <div className="p11-section-divider" />
           </div>
         </div>
 
-        {roster.map((group) => (
-          <div key={group.position} {...revealRef()} >
-            <div className="p11-position-group">
-              <div className="p11-position-label">{group.position}</div>
-              <div className="p11-roster-grid">
-                {group.players.map((player, pi) => (
-                  <div key={player.name} {...revealRef(pi + 1)}>
-                    <div className="p11-player-card">
-                      <span className="p11-player-number">{player.number}</span>
-                      <div className="p11-player-img-wrap">
-                        <img src={player.image} alt={player.name} loading="lazy" />
-                      </div>
-                      <div className="p11-player-info">
-                        <p className="p11-player-pos">{player.role}</p>
-                        <h3 className="p11-player-name">{player.name}</h3>
-                        <p className="p11-player-num-small">#{player.number}</p>
-                      </div>
-                    </div>
+        <div className="p11-roster-grid p11-roster-grid-full">
+          {players.map((player, pi) => (
+            <div key={player.name} {...revealRef(pi % 4 + 1)}>
+              <div className="p11-player-card">
+                <span className="p11-player-number">{player.number}</span>
+                {player.image && (
+                  <div className="p11-player-img-wrap">
+                    <img src={player.image} alt={player.name} loading="lazy" />
                   </div>
-                ))}
+                )}
+                <div className="p11-player-info">
+                  <p className="p11-player-pos">{player.role}</p>
+                  <h3 className="p11-player-name">{player.name.toUpperCase()}</h3>
+                  <p className="p11-player-num-small">#{player.number}</p>
+                  <p className="p11-player-desc">{player.description}</p>
+                </div>
               </div>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* SPONSOR */}
+      <section id="p11-sponsor" className="p11-section p11-section-dark">
+        <div className="p11-section-topline" />
+        <div {...revealRef()}>
+          <div className="p11-section-header">
+            <p className="p11-section-label">Partnership</p>
+            <h2 className="p11-section-title">PACCHETTI <span className="p11-accent">SPONSOR</span></h2>
+            <div className="p11-section-divider" />
           </div>
-        ))}
+        </div>
+        <div className="p11-sponsor-grid">
+          {sponsorTiers.map((tier, i) => (
+            <div key={tier.id} {...revealRef(i + 1)}>
+              <div className={`p11-sponsor-card${tier.highlighted ? ' p11-sponsor-highlighted' : ''}`}>
+                {tier.highlighted && <div className="p11-sponsor-badge">TOP</div>}
+                <div className="p11-sponsor-tier">{tier.tier}</div>
+                <h3 className="p11-sponsor-name">{tier.name}</h3>
+                <ul className="p11-sponsor-features">
+                  {tier.features.map((f) => (
+                    <li key={f}>
+                      <span className="p11-check">&#10003;</span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <a href="#p11-contatti" className="p11-sponsor-cta">
+                  Contattaci &rarr;
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* NEWS */}
+      <section id="p11-news" className="p11-section">
+        <div {...revealRef()}>
+          <div className="p11-section-header">
+            <p className="p11-section-label">Ultime Notizie</p>
+            <h2 className="p11-section-title">GOBBO <span className="p11-accent">NEWS</span></h2>
+            <div className="p11-section-divider" />
+          </div>
+        </div>
+        <div className="p11-news-grid">
+          {news.map((article, i) => (
+            <div key={article.id} {...revealRef(i + 1)}>
+              <div className={`p11-news-card${i === 0 ? ' p11-news-featured' : ''}`}>
+                <div className="p11-news-meta">
+                  <span
+                    className="p11-news-category"
+                    style={{ background: categoryColors[article.category] || '#e35205' }}
+                  >
+                    {article.category}
+                  </span>
+                  <span className="p11-news-date">{article.date}</span>
+                </div>
+                <h3 className="p11-news-title">{article.title}</h3>
+                <p className="p11-news-excerpt">{article.excerpt}</p>
+                <span className="p11-news-read">Leggi &rarr;</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CONTATTI */}
+      <section id="p11-contatti" className="p11-section p11-section-dark">
+        <div className="p11-section-topline" />
+        <div {...revealRef()}>
+          <div className="p11-section-header">
+            <p className="p11-section-label">Scrivici</p>
+            <h2 className="p11-section-title">DIVENTA <span className="p11-accent">PARTNER</span></h2>
+            <div className="p11-section-divider" />
+          </div>
+        </div>
+        <div {...revealRef(1)}>
+          <div className="p11-contact-wrap">
+            <div className="p11-contact-info">
+              <p>
+                Vuoi diventare partner di BigBro FC? Compila il form e ti ricontatteremo
+                per costruire insieme una partnership vincente.
+              </p>
+              <div className="p11-contact-features">
+                <div className="p11-contact-feature">
+                  <span className="p11-contact-feature-icon">&#9889;</span>
+                  <span>Risposta entro 24h</span>
+                </div>
+                <div className="p11-contact-feature">
+                  <span className="p11-contact-feature-icon">&#9733;</span>
+                  <span>Partnership su misura</span>
+                </div>
+                <div className="p11-contact-feature">
+                  <span className="p11-contact-feature-icon">&#9670;</span>
+                  <span>Visibilità garantita</span>
+                </div>
+              </div>
+            </div>
+            <div className="p11-contact-form-wrap">
+              <div className="p11-contact-form-top" />
+              <ContactForm
+                inputClassName="p11-form-input"
+                buttonClassName="p11-form-button"
+              />
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* FOOTER */}
       <footer className="p11-footer">
-        <img className="p11-footer-logo" src={LOGO_URL} alt="BigBro" />
-        <p className="p11-footer-credit">Made with <em className="p11-heart">&hearts;</em> by Mindblast</p>
-        <p className="p11-footer-sub">BigBro &mdash; Kings League Italia 2025</p>
+        <div className="p11-footer-inner">
+          <div className="p11-footer-brand">
+            <img className="p11-footer-logo" src={LOGO_URL} alt="BigBro" />
+            <div>
+              <span className="p11-footer-name">BIGBRO FC</span>
+              <span className="p11-footer-league">Kings League Italia</span>
+            </div>
+          </div>
+          <div className="p11-footer-socials">
+            <a href="#" aria-label="Instagram" className="p11-social-link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" aria-label="Twitter" className="p11-social-link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+            </a>
+            <a href="#" aria-label="YouTube" className="p11-social-link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+            </a>
+          </div>
+          <div className="p11-footer-copy">
+            <p>&copy; {new Date().getFullYear()} BigBro FC. Tutti i diritti riservati.</p>
+            <p className="p11-footer-credit">Made with <em className="p11-heart">&hearts;</em> by <a href="https://mindblast.it" target="_blank" rel="noopener noreferrer">Mindblast</a></p>
+          </div>
+        </div>
       </footer>
     </div>
   )
@@ -616,96 +738,119 @@ const pageStyles = /* css */ `
     margin: 1.5rem auto 0;
   }
 
-  /* ─── LEADERSHIP ─── */
-  .p11-leadership-grid {
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    max-width: 900px;
+  /* ─── CHI SIAMO ─── */
+  .p11-about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1100px;
     margin: 0 auto;
-    flex-wrap: wrap;
+    align-items: center;
   }
 
-  .p11-leader-card {
-    position: relative;
-    width: 340px;
+  .p11-about-text {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--p11-muted);
+  }
+
+  .p11-about-text p {
+    margin-bottom: 1.5rem;
+  }
+
+  .p11-about-text strong {
+    color: var(--p11-orange);
+    font-weight: 500;
+  }
+
+  .p11-about-card {
     background: var(--p11-dark-card);
     border: 1px solid rgba(255,255,255,0.05);
     overflow: hidden;
-    transition: transform 0.4s, border-color 0.4s;
+    position: relative;
   }
 
-  .p11-leader-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(227,82,5,0.2);
-  }
-
-  .p11-leader-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+  .p11-about-card-top {
     height: 3px;
     background: var(--p11-gradient-h);
-    z-index: 1;
   }
 
-  .p11-leader-img-wrap {
-    position: relative;
-    width: 100%;
-    height: 360px;
-    overflow: hidden;
-    background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+  .p11-about-card-inner {
+    padding: 2rem;
   }
 
-  .p11-leader-img-wrap img {
-    width: 100%;
-    height: 100%;
+  .p11-about-moonryde {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .p11-about-moonryde img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
     object-fit: cover;
-    object-position: top center;
-    transition: transform 0.6s, filter 0.6s;
-    filter: grayscale(30%);
+    border: 2px solid rgba(227,82,5,0.3);
   }
 
-  .p11-leader-card:hover .p11-leader-img-wrap img {
-    transform: scale(1.06);
-    filter: grayscale(0%);
+  .p11-about-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+    color: var(--p11-light);
   }
 
-  .p11-leader-img-wrap::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 50%;
-    background: linear-gradient(to top, var(--p11-dark-card), transparent);
-  }
-
-  .p11-leader-info {
-    padding: 1.5rem 2rem 2rem;
-    position: relative;
-  }
-
-  .p11-leader-role {
+  .p11-about-role {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 600;
     font-size: 0.75rem;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
+    color: var(--p11-muted);
+  }
+
+  .p11-about-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .p11-about-stat {
+    text-align: center;
+    padding: 0.75rem;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .p11-about-stat-value {
+    display: block;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
     background: var(--p11-gradient-h);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 0.4rem;
   }
 
-  .p11-leader-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    letter-spacing: 0.05em;
-    color: var(--p11-light);
+  .p11-about-stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--p11-muted);
+  }
+
+  .p11-about-quote {
+    font-family: 'Barlow', sans-serif;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--p11-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
   }
 
   /* ─── STATS BAR ─── */
@@ -750,24 +895,9 @@ const pageStyles = /* css */ `
   }
 
   /* ─── ROSTER ─── */
-  .p11-position-group {
+  .p11-roster-grid-full {
     max-width: 1200px;
-    margin: 0 auto 4rem;
-  }
-
-  .p11-position-group:last-child {
-    margin-bottom: 0;
-  }
-
-  .p11-position-label {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem;
-    letter-spacing: 0.2em;
-    color: var(--p11-muted);
-    margin-bottom: 1.5rem;
-    padding-left: 0.5rem;
-    border-left: 3px solid var(--p11-orange);
-    padding-bottom: 0.1rem;
+    margin: 0 auto;
   }
 
   .p11-roster-grid {
@@ -871,34 +1001,425 @@ const pageStyles = /* css */ `
     margin-top: 0.15rem;
   }
 
+  .p11-player-desc {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    font-size: 0.8rem;
+    color: var(--p11-muted);
+    line-height: 1.5;
+    margin-top: 0.5rem;
+  }
+
+  /* ─── SPONSOR ─── */
+  .p11-sponsor-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .p11-sponsor-card {
+    position: relative;
+    background: var(--p11-dark-card);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 2.5rem 2rem;
+    transition: all 0.4s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .p11-sponsor-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(227,82,5,0.15);
+  }
+
+  .p11-sponsor-highlighted {
+    border-color: rgba(227,82,5,0.3);
+    box-shadow: 0 0 40px rgba(227,82,5,0.08);
+  }
+
+  .p11-sponsor-highlighted::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--p11-gradient-h);
+  }
+
+  .p11-sponsor-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--p11-gradient-h);
+    color: var(--p11-black);
+    padding: 0.3rem 0.8rem;
+  }
+
+  .p11-sponsor-tier {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--p11-orange);
+    margin-bottom: 0.75rem;
+  }
+
+  .p11-sponsor-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.04em;
+    color: var(--p11-light);
+    margin-bottom: 1.5rem;
+  }
+
+  .p11-sponsor-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    flex: 1;
+  }
+
+  .p11-sponsor-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: var(--p11-muted);
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .p11-check {
+    color: var(--p11-orange);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .p11-sponsor-cta {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--p11-orange);
+    border: 1px solid rgba(227,82,5,0.3);
+    padding: 0.75rem 1.5rem;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  .p11-sponsor-cta:hover {
+    background: var(--p11-orange);
+    color: var(--p11-black);
+    border-color: var(--p11-orange);
+  }
+
+  .p11-sponsor-highlighted .p11-sponsor-cta {
+    background: var(--p11-gradient-h);
+    color: var(--p11-black);
+    border-color: transparent;
+  }
+
+  .p11-sponsor-highlighted .p11-sponsor-cta:hover {
+    filter: brightness(1.1);
+    transform: scale(1.02);
+  }
+
+  /* ─── NEWS ─── */
+  .p11-news-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .p11-news-card {
+    background: var(--p11-dark-card);
+    border: 1px solid rgba(255,255,255,0.04);
+    padding: 2rem;
+    transition: all 0.4s;
+    cursor: pointer;
+  }
+
+  .p11-news-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(227,82,5,0.15);
+  }
+
+  .p11-news-featured {
+    grid-column: 1 / -1;
+  }
+
+  .p11-news-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .p11-news-category {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    display: inline-block;
+  }
+
+  .p11-news-date {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.8rem;
+    color: var(--p11-muted);
+  }
+
+  .p11-news-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.03em;
+    color: var(--p11-light);
+    margin-bottom: 0.75rem;
+    line-height: 1.1;
+    transition: color 0.3s;
+  }
+
+  .p11-news-card:hover .p11-news-title {
+    color: var(--p11-orange);
+  }
+
+  .p11-news-excerpt {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: var(--p11-muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .p11-news-read {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--p11-orange);
+    transition: letter-spacing 0.3s;
+  }
+
+  .p11-news-card:hover .p11-news-read {
+    letter-spacing: 0.25em;
+  }
+
+  /* ─── CONTATTI ─── */
+  .p11-contact-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    align-items: start;
+  }
+
+  .p11-contact-info {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--p11-muted);
+  }
+
+  .p11-contact-features {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .p11-contact-feature {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--p11-dark-card);
+    border: 1px solid rgba(255,255,255,0.05);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--p11-light);
+  }
+
+  .p11-contact-feature-icon {
+    font-size: 1.2rem;
+    color: var(--p11-orange);
+  }
+
+  .p11-contact-form-wrap {
+    background: var(--p11-dark-card);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .p11-contact-form-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--p11-gradient-h);
+  }
+
+  .p11-form-input {
+    background: var(--p11-black) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-radius: 0 !important;
+    color: var(--p11-light) !important;
+    font-family: 'Barlow', sans-serif !important;
+  }
+
+  .p11-form-input:focus {
+    border-color: var(--p11-orange) !important;
+    outline: none !important;
+  }
+
+  .p11-form-button {
+    background: var(--p11-gradient-h) !important;
+    color: var(--p11-black) !important;
+    border-radius: 0 !important;
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.15em !important;
+    text-transform: uppercase !important;
+    transition: filter 0.3s, transform 0.3s !important;
+  }
+
+  .p11-form-button:hover {
+    filter: brightness(1.1) !important;
+    transform: scale(1.02) !important;
+    background: var(--p11-gradient-h) !important;
+  }
+
   /* ─── FOOTER ─── */
   .p11-footer {
     background: var(--p11-black);
     border-top: 1px solid rgba(255,255,255,0.05);
     padding: 3rem 2rem;
-    text-align: center;
+  }
+
+  .p11-footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .p11-footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 
   .p11-footer-logo {
-    height: 50px;
+    height: 40px;
     width: auto;
-    opacity: 0.4;
-    margin-bottom: 1.5rem;
-    filter: grayscale(1);
+    opacity: 0.6;
+    filter: grayscale(0.5);
     transition: all 0.4s;
   }
 
   .p11-footer-logo:hover {
-    opacity: 0.8;
+    opacity: 1;
     filter: grayscale(0);
   }
 
-  .p11-footer-credit {
-    font-family: 'Barlow', sans-serif;
-    font-weight: 400;
-    font-size: 0.9rem;
+  .p11-footer-name {
+    display: block;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.1em;
+    background: var(--p11-gradient-h);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .p11-footer-league {
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
     color: var(--p11-muted);
-    letter-spacing: 0.05em;
+  }
+
+  .p11-footer-socials {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .p11-social-link {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--p11-muted);
+    transition: all 0.3s;
+  }
+
+  .p11-social-link:hover {
+    border-color: rgba(227,82,5,0.3);
+    color: var(--p11-orange);
+    background: rgba(227,82,5,0.05);
+  }
+
+  .p11-footer-copy {
+    text-align: right;
+  }
+
+  .p11-footer-copy p {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.8rem;
+    color: var(--p11-muted);
+    margin: 0;
+  }
+
+  .p11-footer-credit {
+    margin-top: 0.25rem !important;
+  }
+
+  .p11-footer-credit a {
+    color: var(--p11-orange);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .p11-footer-credit a:hover {
+    color: var(--p11-gold);
   }
 
   .p11-heart {
@@ -914,15 +1435,6 @@ const pageStyles = /* css */ `
     28% { transform: scale(1); }
     42% { transform: scale(1.15); }
     56% { transform: scale(1); }
-  }
-
-  .p11-footer-sub {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.15);
-    margin-top: 1rem;
   }
 
   /* ─── SCROLL REVEAL ─── */
@@ -947,8 +1459,7 @@ const pageStyles = /* css */ `
     .p11-nav { padding: 1rem 1.5rem; }
     .p11-nav-links { display: none; }
     .p11-hero-logo { width: 110px; height: 110px; }
-    .p11-leadership-grid { gap: 1.5rem; }
-    .p11-leader-card { width: 100%; max-width: 340px; }
+    .p11-about-grid { grid-template-columns: 1fr; gap: 2rem; }
     .p11-roster-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
     .p11-player-img-wrap { height: 200px; }
     .p11-player-number { font-size: 2rem; }
@@ -956,5 +1467,10 @@ const pageStyles = /* css */ `
     .p11-section { padding: 4rem 1.25rem; }
     .p11-stats-inner { gap: 1.5rem; }
     .p11-stat-num { font-size: 2.5rem; }
+    .p11-sponsor-grid { grid-template-columns: 1fr; max-width: 400px; }
+    .p11-news-grid { grid-template-columns: 1fr; }
+    .p11-contact-wrap { grid-template-columns: 1fr; gap: 2rem; }
+    .p11-footer-inner { flex-direction: column; text-align: center; }
+    .p11-footer-copy { text-align: center; }
   }
 `
